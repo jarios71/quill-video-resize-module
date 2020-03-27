@@ -9,7 +9,7 @@ export class Resize extends BaseModule {
     this.addBox('nwse-resize') // top left
     this.addBox('nesw-resize') // top right
     this.addBox('nwse-resize') // bottom right
-    this.addBox('nesw-resize') // bottom left    
+    this.addBox('nesw-resize') // bottom left
 
     this.handleMouseup = () => {
       // reset cursor everywhere
@@ -18,6 +18,9 @@ export class Resize extends BaseModule {
       document.removeEventListener('mousemove', this.handleDrag)
       document.removeEventListener('mouseup', this.handleMouseup)
     }
+
+    console.log(this.vid);
+
 
     this.handleDrag = evt => {
       if (!this.vid) {
@@ -29,11 +32,24 @@ export class Resize extends BaseModule {
       const deltaY = evt.clientY - this.dragStartY
       if (this.dragBox === this.boxes[0] || this.dragBox === this.boxes[3]) {
         this.vid.width = Math.round(this.preDragWidth - deltaX)
-        this.vid.height = Math.round(this.preDragHeight - deltaY)
       } else {
         this.vid.width = Math.round(this.preDragWidth + deltaX)
-        this.vid.height = Math.round(this.preDragHeight + deltaY)
       }
+      console.log(this.preDragHeight, deltaY);
+      if (this.dragBox === this.boxes[0] || this.dragBox === this.boxes[1]) {
+        this.vid.height = Math.round(this.preDragHeight - deltaY);
+        this.vid.style = "min-height: " + Math.round(this.preDragHeight - deltaY) + 'px!important;';
+      } else {
+        this.vid.height = Math.round(this.preDragHeight + deltaY);
+        this.vid.style = "min-height: " + Math.round(this.preDragHeight + deltaY) + 'px!important;';
+      }
+      // if (this.dragBox === this.boxes[0] || this.dragBox === this.boxes[3]) {
+      //   this.vid.width = Math.round(this.preDragWidth - deltaX)
+      //   this.vid.height = Math.round(this.preDragHeight - deltaY)
+      // } else {
+      //   this.vid.width = Math.round(this.preDragWidth + deltaX)
+      //   this.vid.height = Math.round(this.preDragHeight + deltaY)
+      // }
       this.requestUpdate()
     }
 
